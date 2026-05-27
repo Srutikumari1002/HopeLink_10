@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HopeLink - Premium Organ Donation & Healthcare Portal</title>
+  <meta name="description" content="Pledge organ donation, search nearby available hospitals, book appointments, and submit urgent requests on India's premium digital healthcare dashboard.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans for ultra-modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Floating Toast Notifications -->
+  <div id="toast-container"></div>
+
+  <!-- Header Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo" onclick="app.navigateTo('landing')">
+        <i class="fa-solid fa-heart-pulse logo-icon"></i>
+        <span>Hope<span>Link</span></span>
+      </div>
+      <nav class="nav-menu">
+        <a href="#" class="nav-link active" data-target="landing" onclick="app.navigateTo('landing')">Home</a>
+        <a href="#" class="nav-link" data-target="hospitals" id="nav-hospitals-link" onclick="app.navigateToDashboard('hospitals')">Hospitals</a>
+        <a href="#" class="nav-link" data-target="pledge" id="nav-pledge-link" onclick="app.navigateToDashboard('pledge')">Pledge Organs</a>
+        <button class="btn btn-primary btn-auth" id="header-auth-btn" onclick="app.navigateTo('auth')">Login / Sign Up</button>
+        
+        <!-- User Profile Dropdown (Hidden by default) -->
+        <div class="user-dropdown" id="user-profile-menu" style="display: none;">
+          <div class="avatar" onclick="app.toggleDropdown()">
+            <i class="fa-solid fa-user"></i>
+          </div>
+          <div class="dropdown-content" id="dropdown-menu">
+            <div class="dropdown-header">
+              <span class="user-name" id="profile-name">John Doe</span>
+              <span class="user-email" id="profile-email">john@example.com</span>
+            </div>
+            <hr>
+            <a href="#" onclick="app.navigateTo('dashboard')"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="#" onclick="app.logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== LANDING VIEW ==================== -->
+  <main id="landing-view" class="view-section active">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-bg-glow"></div>
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <div class="badge"><i class="fa-solid fa-shield-heart"></i> Save Lives, Leave a Legacy</div>
+          <h1>Be the Hope. <br>Pledge to <span>Donate Organs</span> Today.</h1>
+          <p>HopeLink is India's premium digital gateway connecting donors, hospitals, and transplant seekers. Secure your digital pledge card, lookup live organ banks, and make checkup appointments in under 3 minutes.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary btn-lg" onclick="app.startPledgeFlow()">Pledge Your Organs <i class="fa-solid fa-arrow-right"></i></button>
+            <button class="btn btn-secondary btn-lg" onclick="app.startSearchFlow()">Find Hospitals <i class="fa-solid fa-magnifying-glass"></i></button>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="visual-card glass">
+            <div class="card-pulse"></div>
+            <i class="fa-solid fa-heart-pulse visual-icon"></i>
+            <div class="visual-stats">
+              <div class="stat-item">
+                <span class="num">12,450+</span>
+                <span class="label">Pledges Registered</span>
+              </div>
+              <div class="stat-item">
+                <span class="num">4,810+</span>
+                <span class="label">Lives Reborn</span>
+              </div>
+            </div>
+          </div>
+          <div class="visual-card-mini card-left glass">
+            <i class="fa-solid fa-kit-medical-accent fa-truck-medical text-teal"></i>
+            <div>
+              <h4>Emergency Response</h4>
+              <p>Active Dispatch Channels</p>
+            </div>
+          </div>
+          <div class="visual-card-mini card-right glass">
+            <i class="fa-solid fa-hospital text-emerald"></i>
+            <div>
+              <h4>5 Major Centers</h4>
+              <p>Live Interlinked Data</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Info Blocks -->
+    <section class="info-section">
+      <div class="container text-center">
+        <h2>How HopeLink Transforms Healthcare Coordination</h2>
+        <p class="section-subtitle">Real-time matching, certified hospital appointments, and secure legal pledge management.</p>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="icon-box color-teal"><i class="fa-solid fa-file-contract"></i></div>
+            <h3>Legal Pledge Registration</h3>
+            <p>Fill out the pre-death organ consent securely. Generate a certified digital Pledge Card and legal donation receipts instantly.</p>
+          </div>
+          <div class="info-card">
+            <div class="icon-box color-emerald"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3>Intelligent Proximity Search</h3>
+            <p>Search using coordinate-distance calculations. Locate the nearest interlinked medical center stocking organs or matching profiles.</p>
+          </div>
+          <div class="info-card">
+            <div class="icon-box color-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <h3>Urgent Dispatch Line</h3>
+            <p>In critical emergencies, trigger immediate, high-priority notifications across local hospitals to locate matching organ reserves.</p>
+          </div>
+          <div class="info-card">
+            <div class="icon-box color-indigo"><i class="fa-solid fa-calendar-check"></i></div>
+            <h3>Pre-Checkup Appointments</h3>
+            <p>Book checkups and suitability tests easily. Get verified booking confirmation slips in PDF to skip hospital queues.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== AUTH VIEW ==================== -->
+  <main id="auth-view" class="view-section">
+    <div class="auth-container">
+      <div class="auth-card glass">
+        <!-- Auth Tabs -->
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" onclick="app.switchAuthTab('login')">Sign In</button>
+          <button class="auth-tab-btn" onclick="app.switchAuthTab('register')">Create Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <div class="auth-form-container active" id="login-form-box">
+          <h2 class="auth-title">Welcome Back</h2>
+          <p class="auth-desc">Log in to manage your pledges, active appointments, and emergency records.</p>
+          <form id="login-form" onsubmit="app.handleLogin(event)">
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="login-email" required placeholder="name@example.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="login-password" required placeholder="••••••••">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Log In <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
+          </form>
+        </div>
+
+        <!-- Register Form -->
+        <div class="auth-form-container" id="register-form-box">
+          <h2 class="auth-title">Join HopeLink</h2>
+          <p class="auth-desc">Create a secure profile to start saving lives and scheduling health checks.</p>
+          <form id="register-form" onsubmit="app.handleRegister(event)">
+            <div class="form-group">
+              <label for="reg-name">Full Name</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" id="reg-name" required placeholder="Jane Doe">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-email">Email Address</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" id="reg-email" required placeholder="name@example.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="reg-password">Password</label>
+              <div class="input-wrapper">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" id="reg-password" required placeholder="Min 6 characters">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register Account <i class="fa-solid fa-user-plus"></i></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ==================== DASHBOARD VIEW ==================== -->
+  <main id="dashboard-view" class="view-section">
+    <div class="dashboard-wrapper">
+      <!-- Sidebar Navigation -->
+      <aside class="dash-sidebar">
+        <div class="dash-user-card">
+          <div class="dash-avatar"><i class="fa-solid fa-house-medical"></i></div>
+          <div>
+            <h3 id="dash-user-name">Welcome Back</h3>
+            <span class="user-tag"><i class="fa-solid fa-shield-heart text-teal"></i> Portal Active</span>
+          </div>
+        </div>
+        <nav class="dash-nav">
+          <button class="dash-nav-btn active" data-tab="overview" onclick="app.switchDashTab('overview')">
+            <i class="fa-solid fa-table-columns"></i> Dashboard Overview
+          </button>
+          <button class="dash-nav-btn" data-tab="pledge" onclick="app.switchDashTab('pledge')">
+            <i class="fa-solid fa-heart-circle-check"></i> Organ Pledge Form
+          </button>
+          <button class="dash-nav-btn" data-tab="hospitals" onclick="app.switchDashTab('hospitals')">
+            <i class="fa-solid fa-magnifying-glass-location"></i> Hospital & Donor Finder
+          </button>
+          <button class="dash-nav-btn" data-tab="appointments" onclick="app.switchDashTab('appointments')">
+            <i class="fa-solid fa-calendar-check"></i> Book Appointment
+          </button>
+          <button class="dash-nav-btn btn-danger-sidebar" data-tab="emergency" onclick="app.switchDashTab('emergency')">
+            <i class="fa-solid fa-triangle-exclamation"></i> Emergency Request
+          </button>
+        </nav>
+      </aside>
+
+      <!-- Dashboard Main Workspace -->
+      <section class="dash-content">
+        
+        <!-- MODULE: OVERVIEW TAB -->
+        <div class="dash-tab-content active" id="tab-overview">
+          <div class="dash-header">
+            <div>
+              <h2>Control Center Overview</h2>
+              <p>Monitor your active medical profiles, upcoming healthcare appointments, and organ pledges.</p>
+            </div>
+            <div class="live-clock"><i class="fa-solid fa-clock-rotate-left"></i> Real-time DB interlink active</div>
+          </div>
+
+          <!-- Cards Summary Grid -->
+          <div class="stats-row">
+            <div class="stat-card glass">
+              <div class="stat-header">
+                <span>Pledge Status</span>
+                <i class="fa-solid fa-heart-circle-check text-teal"></i>
+              </div>
+              <h3 id="overview-pledge-status">Not Registered</h3>
+              <p class="sub" id="overview-pledge-sub">Support the community</p>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-header">
+                <span>Appointments Scheduled</span>
+                <i class="fa-solid fa-calendar text-emerald"></i>
+              </div>
+              <h3 id="overview-appointment-count">0 Bookings</h3>
+              <p class="sub">Active checkups list</p>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-header">
+                <span>Emergency Broadcasts</span>
+                <i class="fa-solid fa-truck-medical text-red"></i>
+              </div>
+              <h3 id="overview-emergency-count">No Alerts</h3>
+              <p class="sub">Active urgent requests</p>
+            </div>
+          </div>
+
+          <!-- Interactive Overview Sections -->
+          <div class="overview-grid">
+            <!-- Digital Pledge Card Section -->
+            <div class="grid-card glass">
+              <h3>Your Certified Donation Card</h3>
+              <p class="card-desc">Upon complete pledge registration, your legal donor ID is live-rendered here.</p>
+              
+              <div id="pledge-card-wrapper">
+                <!-- Placeholders or Certified Card -->
+                <div class="card-empty-state">
+                  <i class="fa-solid fa-heart-circle-plus"></i>
+                  <p>You haven't pledged your organs yet.</p>
+                  <button class="btn btn-teal btn-sm" onclick="app.switchDashTab('pledge')">Register Donation Pledge Now</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upcoming Appointments list -->
+            <div class="grid-card glass">
+              <h3>Upcoming Clinic Checkups</h3>
+              <p class="card-desc">Show this dynamic booking card at the hospital check-in counter.</p>
+              
+              <div class="appointments-list-wrapper" id="overview-appointments-list">
+                <!-- Dynamically populated appointments list -->
+                <div class="list-empty-state">
+                  <i class="fa-solid fa-calendar-plus"></i>
+                  <p>No appointments booked.</p>
+                  <button class="btn btn-teal btn-sm" onclick="app.switchDashTab('appointments')">Schedule Clinic Checkup</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODULE: ORGAN PLEDGE FORM -->
+        <div class="dash-tab-content" id="tab-pledge">
+          <div class="dash-header">
+            <div>
+              <h2>Organ Donation Pledge Registration</h2>
+              <p>Consent securely to become an organ donor after your death. Save lives and leave a legacy of healing.</p>
+            </div>
+          </div>
+
+          <div class="form-container-card glass">
+            <div class="form-banner">
+              <i class="fa-solid fa-circle-info"></i>
+              <span><strong>Medical Fact:</strong> One organ donor can save up to eight lives and heal over seventy-five more through tissue donation.</span>
+            </div>
+            <form id="pledge-form" onsubmit="app.handlePledgeSubmission(event)">
+              <div class="form-section-title">1. Choose Organs to Pledge</div>
+              <div class="organ-selector-grid">
+                <label class="organ-checkbox-card">
+                  <input type="checkbox" name="organs" value="Heart">
+                  <span class="checkbox-inner">
+                    <i class="fa-solid fa-heart text-red"></i>
+                    <span>Heart</span>
+                  </span>
+                </label>
+                <label class="organ-checkbox-card">
+                  <input type="checkbox" name="organs" value="Kidney">
+                  <span class="checkbox-inner">
+                    <i class="fa-solid fa-lungs text-teal"></i>
+                    <span>Kidney</span>
+                  </span>
+                </label>
+                <label class="organ-checkbox-card">
+                  <input type="checkbox" name="organs" value="Liver">
+                  <span class="checkbox-inner">
+                    <i class="fa-solid fa-dna text-emerald"></i>
+                    <span>Liver</span>
+                  </span>
+                </label>
+                <label class="organ-checkbox-card">
+                  <input type="checkbox" name="organs" value="Cornea">
+                  <span class="checkbox-inner">
+                    <i class="fa-solid fa-eye text-indigo"></i>
+                    <span>Cornea (Eyes)</span>
+                  </span>
+                </label>
+                <label class="organ-checkbox-card">
+                  <input type="checkbox" name="organs" value="Lungs">
+                  <span class="checkbox-inner">
+                    <i class="fa-solid fa-wind text-light-blue"></i>
+                    <span>Lungs</span>
+                  </span>
+                </label>
+                <label class="organ-checkbox-card">
+                  <input type="checkbox" name="organs" value="Pancreas">
+                  <span class="checkbox-inner">
+                    <i class="fa-solid fa-flask text-purple"></i>
+                    <span>Pancreas</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="form-section-title">2. Legal Emergency Contact Details</div>
+              <p class="section-desc">Providing a close relative or guardian is required for consent registration authorization.</p>
+              
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="pledge-emergency-name">Emergency Contact Representative Full Name</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <input type="text" id="pledge-emergency-name" required placeholder="Guardian Name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="pledge-emergency-phone">Contact Phone Number</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="pledge-emergency-phone" required placeholder="e.g. +91 98765 43210">
+                  </div>
+                </div>
+              </div>
+
+              <div class="consent-agreement">
+                <label class="agreement-checkbox">
+                  <input type="checkbox" required>
+                  <span>I hereby authorize and request that after my death, my consented organs be donated for transplant or therapeutic purposes. I certify that my family has been informed of this wish.</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-pledge">Register My Legacy Pledge <i class="fa-solid fa-signature"></i></button>
+            </form>
+          </div>
+        </div>
+
+        <!-- MODULE: HOSPITAL SEARCH & DONOR FINDER -->
+        <div class="dash-tab-content" id="tab-hospitals">
+          <div class="dash-header">
+            <div>
+              <h2>Intelligent Nearest Hospital & Organ Search</h2>
+              <p>Locate available transplant services, check organ banks, and calculate precise distance proximity.</p>
+            </div>
+          </div>
+
+          <!-- Proximity Filter Control Bar -->
+          <div class="filter-bar glass">
+            <div class="filter-row">
+              <div class="filter-group">
+                <label for="search-organ-type">Organ Stock Search</label>
+                <select id="search-organ-type" onchange="app.filterHospitals()">
+                  <option value="ALL">Show All Stock</option>
+                  <option value="Kidney">Kidney Bank</option>
+                  <option value="Cornea">Cornea Bank</option>
+                  <option value="Liver">Liver Bank</option>
+                  <option value="Heart">Heart Bank</option>
+                  <option value="Lungs">Lungs Bank</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label for="simulated-location">Your Simulated Coordinates</label>
+                <select id="simulated-location" onchange="app.updateLocationCoordinates()">
+                  <option value="12.9716,77.5946">Central Bengaluru (MG Road - 12.9716, 77.5946)</option>
+                  <option value="12.9304,77.6784">Bellandur Tech Zone (East - 12.9304, 77.6784)</option>
+                  <option value="12.8399,77.6770">Electronic City Phase 1 (South - 12.8399, 77.6770)</option>
+                  <option value="13.0285,77.5896">Hebbal Lake Residency (North - 13.0285, 77.5896)</option>
+                </select>
+              </div>
+
+              <div class="filter-group button-group-filter">
+                <button class="btn btn-teal" onclick="app.refreshHospitalList()"><i class="fa-solid fa-location-crosshairs"></i> Recalculate Distances</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hospitals List Render -->
+          <div class="hospital-listings-grid" id="hospitals-list-container">
+            <!-- Dynamic listings get generated here -->
+          </div>
+        </div>
+
+        <!-- MODULE: BOOK APPOINTMENT -->
+        <div class="dash-tab-content" id="tab-appointments">
+          <div class="dash-header">
+            <div>
+              <h2>Schedule Hospital Checkup & Suitability Appointment</h2>
+              <p>Book checkups, compatibility diagnostics, or consultations directly with interlinked healthcare centers.</p>
+            </div>
+          </div>
+
+          <div class="form-container-card glass">
+            <form id="appointment-form" onsubmit="app.handleAppointmentSubmission(event)">
+              <div class="form-section-title">Select Hospital & Consultation Details</div>
+              
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="appointment-hospital">Select Healthcare Center</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-hospital"></i>
+                    <select id="appointment-hospital" required>
+                      <option value="" disabled selected>Select nearest clinic...</option>
+                      <!-- Populated dynamically via JS -->
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="appointment-doctor">Specialty Clinic & Doctor</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-user-doctor"></i>
+                    <select id="appointment-doctor" required>
+                      <option value="" disabled selected>Select specialty...</option>
+                      <option value="Dr. Anil Deshpande (Organ Transplant Specialist)">Dr. Anil Deshpande (Organ Transplant Specialist)</option>
+                      <option value="Dr. Meera Iyer (Senior Cardiologist)">Dr. Meera Iyer (Senior Cardiologist)</option>
+                      <option value="Dr. Rohan Malhotra (Consultant Nephrologist)">Dr. Rohan Malhotra (Consultant Nephrologist)</option>
+                      <option value="Dr. Sarah D'Souza (Ophthalmic Surgeon)">Dr. Sarah D'Souza (Ophthalmic Surgeon)</option>
+                      <option value="Dr. Vikram Sen (Hepatobiliary Specialist)">Dr. Vikram Sen (Hepatobiliary Specialist)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label for="appointment-date">Date of Appointment</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <input type="date" id="appointment-date" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="appointment-time">Preferred Time Slot</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-clock"></i>
+                    <select id="appointment-time" required>
+                      <option value="" disabled selected>Select time...</option>
+                      <option value="09:00 AM - 10:00 AM">09:00 AM - 10:00 AM</option>
+                      <option value="10:30 AM - 11:30 AM">10:30 AM - 11:30 AM</option>
+                      <option value="12:00 PM - 01:00 PM">12:00 PM - 01:00 PM</option>
+                      <option value="02:30 PM - 03:30 PM">02:30 PM - 03:30 PM</option>
+                      <option value="04:00 PM - 05:00 PM">04:00 PM - 05:00 PM</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="appointment-reason">Reason for Checkup</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-notes-medical"></i>
+                    <select id="appointment-reason" required>
+                      <option value="Donor Suitability Diagnostic">Donor Suitability Diagnostic</option>
+                      <option value="Organ Compatibility Testing">Organ Compatibility Testing</option>
+                      <option value="General Health Consultation">General Health Consultation</option>
+                      <option value="Medical Certificate Verification">Medical Certificate Verification</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-lg">Book Confirmed Appointment <i class="fa-solid fa-calendar-check"></i></button>
+            </form>
+          </div>
+        </div>
+
+        <!-- MODULE: EMERGENCY HUB -->
+        <div class="dash-tab-content" id="tab-emergency">
+          <div class="dash-header">
+            <div class="emergency-headline">
+              <span class="emergency-badge pulse-dot">CRITICAL SYSTEM</span>
+              <h2>Urgent Organ Request Dispatch</h2>
+              <p>Authorized patients and hospitals can initiate immediate, real-time matchmaking lists for severe emergency transplants.</p>
+            </div>
+          </div>
+
+          <div class="form-container-card emergency-alert-card glass">
+            <div class="emergency-alert-banner">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div>
+                <h4>Life-Saving Emergency Protocol</h4>
+                <p>This action broadcasts an active notification to the organ banks and coordinating transplant units of all local linked centers. Do not use this section for routine requests.</p>
+              </div>
+            </div>
+
+            <form id="emergency-form" onsubmit="app.handleEmergencySubmission(event)">
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label for="emergency-organ">Organ Needed Urgently</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <select id="emergency-organ" required>
+                      <option value="" disabled selected>Select organ...</option>
+                      <option value="Heart">Heart</option>
+                      <option value="Kidney">Kidney</option>
+                      <option value="Liver">Liver</option>
+                      <option value="Lungs">Lungs</option>
+                      <option value="Pancreas">Pancreas</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="emergency-blood">Patient Blood Group</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-droplet text-red"></i>
+                    <select id="emergency-blood" required>
+                      <option value="" disabled selected>Select blood type...</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="emergency-hospital">Current Treating Hospital</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-hospital"></i>
+                    <select id="emergency-hospital" required>
+                      <option value="" disabled selected>Select hospital...</option>
+                      <!-- Populated dynamically via JS -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="emergency-urgency">Urgency Status</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <select id="emergency-urgency" required class="critical-select">
+                      <option value="CRITICAL_LIFE_SUPPORT">Critical: Life Support / Ventilator Status (ASAP)</option>
+                      <option value="HIGH_PRIORITY">High Priority: Patient in ICU under stable monitoring</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="emergency-phone">Duty Doctor/Coordinators Phone Number</label>
+                  <div class="input-wrapper">
+                    <i class="fa-solid fa-phone"></i>
+                    <input type="tel" id="emergency-phone" required placeholder="Coordinator's direct number">
+                  </div>
+                </div>
+              </div>
+
+              <div class="consent-agreement">
+                <label class="agreement-checkbox label-red">
+                  <input type="checkbox" required>
+                  <span>I authorize that this is an authentic medical emergency matching procedure and all patient credentials and hospital dispatch details provided are true and accurate.</span>
+                </label>
+              </div>
+
+              <button type="submit" class="btn btn-red btn-lg btn-block">Broadcast Critical Request <i class="fa-solid fa-satellite-dish"></i></button>
+            </form>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <!-- ==================== RECEIPT PRINT MODAL ==================== -->
+  <div id="print-modal" class="modal-overlay">
+    <div class="modal-card glass">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-print"></i> Document Verification Receipt</h3>
+        <button class="modal-close-btn" onclick="app.closePrintModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Printable Document Wrapper -->
+      <div class="modal-body-printable" id="printable-document-content">
+        <!-- Generates beautiful ticket / receipt layout dynamically via app.js -->
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="app.closePrintModal()">Close Window</button>
+        <button class="btn btn-primary" onclick="app.printCurrentReceipt()"><i class="fa-solid fa-download"></i> Print / Download PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
