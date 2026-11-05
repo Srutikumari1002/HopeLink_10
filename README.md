@@ -1,8 +1,8 @@
-# HopeLink - Premium Organ Donation & Healthcare Portal
+# HopeLink - Premium Organ Donation & Healthcare Portal (MERN Stack)
 
 HopeLink is a premium, full-stack, and highly interactive healthcare web application designed to bridge the gap between organ donors, clinical diagnostics, and emergency hospital networks. 
 
-Built with modern design aesthetics (glassmorphism, tailored gradients, and telemetry micro-animations) and a robust database backend, HopeLink provides a secure environment to manage donation pledges, find nearby hospitals, and schedule clinic appointments.
+This repository has been fully upgraded to the **MERN Stack** (MongoDB, Express, React, Node.js), featuring a modern, component-driven client built on **Vite** and a robust **Mongoose/NoSQL** database backend.
 
 ---
 
@@ -36,30 +36,42 @@ Built with modern design aesthetics (glassmorphism, tailored gradients, and tele
 
 HopeLink is designed with a lightweight, zero-configuration architecture, making it highly portable and production-ready.
 
-### Backend (REST API Server)
+### Backend (`/server`)
 *   **Node.js & Express.js**: Handles API routing, middleware integration, and session validation.
-*   **SQLite3 Database**: A self-contained, serverless SQL database stored as a single local file (`database.sqlite`). Automatically initializes tables and seeds mock dataset on first startup.
+*   **MongoDB & Mongoose**: Mongoose ODM is used to define structured schemas for users, pledges, appointments, and hospitals.
 *   **Security Tools**: Hashing with `bcryptjs` and token validation using `jsonwebtoken`.
 
-### Frontend (Single Page Application)
-*   **Structure**: Semantic HTML5 designed for SEO and complete screen accessibility.
+### Frontend (`/client`)
+*   **Vite + React**: Component-driven UI utilizing state management hooks (`useState`, `useEffect`) for a seamless Single Page Application.
 *   **Styling (Vanilla CSS3)**:
     *   Curated dark-space health-tech theme using deep indigos, glowing teals, and emergency crimson colors.
     *   Glassmorphism elements (`backdrop-filter`) and smooth state transitions.
     *   Telemetry keyframe animations (`pulseGlow`, `wavePulse`, `floatCard`).
-*   **Logic (Vanilla ES6)**: Modular router, form lifecycle controllers, coordinate distance calculations, and modal state management.
-*   **Print Engine**: Built with native `@media print` queries. When the user clicks "Print / Download PDF", the stylesheet automatically hides headers, buttons, and backgrounds, formatting **only the official verification slip** into clean, white A4 documents ready to print or save.
+*   **Print Engine**: Built with native `@media print` queries. When the user clicks "Print / Download PDF", the stylesheet automatically hides headers, sidebars, and backgrounds, formatting **only the official verification slip** into clean, white A4 documents ready to print or save.
 
 ---
 
-## 📂 Database Relationship Model
+## 📂 Directory Structure
 
 ```text
-  [users] ──(1:1)──> [pledges]
-     │
-     ├──(1:N)──> [appointments] <──(N:1)── [hospitals]
-     │
-     └──(1:N)──> [emergency_requests] <──(N:1)── [hospitals]
+HopeLink_MERN/
+├── server/                    # Node/Express Backend
+│   ├── config/db.js           # MongoDB Atlas/Local connection
+│   ├── models/                # Mongoose Models (User, Pledge, Hospital, etc.)
+│   ├── routes/                # Express API Route controllers
+│   ├── middleware/auth.js     # JWT session validator
+│   ├── seed.js                # Database seeder script
+│   └── server.js              # Server entry point
+│
+└── client/                    # React Frontend (Vite)
+    ├── vite.config.js         # Port configuration & backend API proxy
+    ├── index.html             # Client HTML5 base
+    └── src/
+        ├── index.css          # Glassmorphism tokens & print stylesheet overrides
+        ├── App.jsx            # Main app router and state context
+        ├── main.jsx           # React app entry point
+        ├── components/        # Reusable dashboard UI elements
+        └── pages/             # Page view containers (Landing, Auth, Dashboard)
 ```
 
 ---
@@ -69,7 +81,7 @@ HopeLink is designed with a lightweight, zero-configuration architecture, making
 Getting HopeLink up and running on your machine requires zero complex database installations or external cloud configurations.
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed.
+Make sure you have [Node.js](https://nodejs.org/) and a local instance of [MongoDB](https://www.mongodb.com/try/download/community) running.
 
 ### Installation & Run
 
@@ -79,18 +91,23 @@ Make sure you have [Node.js](https://nodejs.org/) installed.
    cd HopeLink_10
    ```
 
-2. **Install all dependencies:**
+2. **Install all dependencies for root, client, and server:**
    ```bash
-   npm install
+   npm run install-all
    ```
 
-3. **Start the local server:**
+3. **Seed the database with hospitals:**
    ```bash
-   npm start
+   npm run seed
    ```
 
-4. **Interact with the portal:**
-   Open your browser and navigate to **[http://localhost:3000](http://localhost:3000)**. The server will automatically create `database.sqlite`, build the database tables, and seed it with major local hospitals.
+4. **Start both Backend and Frontend concurrently:**
+   ```bash
+   npm run dev
+   ```
+
+5. **Interact with the portal:**
+   Open your browser and navigate to **[http://localhost:3000](http://localhost:3000)** (which proxies API requests automatically to the backend on port `5000`).
 
 ---
 
